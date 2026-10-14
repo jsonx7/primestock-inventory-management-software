@@ -6,12 +6,13 @@ ENV APACHE_DOCUMENT_ROOT=/var/www/html \
 RUN apt-get update && apt-get install -y --no-install-recommends \
       git unzip curl ca-certificates imagemagick libmagickwand-dev \
       libicu-dev libzip-dev libpng-dev libjpeg62-turbo-dev libfreetype6-dev \
+      libonig-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j"$(nproc)" bcmath exif gd intl mbstring pdo_mysql zip \
     && pecl install imagick \
     && docker-php-ext-enable imagick \
     && a2enmod rewrite headers expires \
-    && apt-get purge -y --auto-remove libmagickwand-dev libicu-dev libzip-dev libpng-dev libjpeg62-turbo-dev libfreetype6-dev \
+    && apt-get purge -y --auto-remove libmagickwand-dev libicu-dev libzip-dev libpng-dev libjpeg62-turbo-dev libfreetype6-dev libonig-dev \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
